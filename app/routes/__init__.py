@@ -1,0 +1,1 @@
+from app.routes.auth import auth_router, token_router # noqa F401
