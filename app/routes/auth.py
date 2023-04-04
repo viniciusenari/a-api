@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from app.database import Session
-from app.models import UserInDB, UserInDBBase
+from app.models import UserInDB, UserBaseInDB
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -75,7 +75,7 @@ def auth_router():
     router = APIRouter()
 
     @router.post("/register")
-    async def register(user: UserInDBBase):
+    async def register(user: UserBaseInDB):
         username = user.username
         email = user.email
         password = user.hashed_password
