@@ -3,8 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
     username = Column(String)
@@ -12,7 +13,7 @@ class User(Base):
 
     def __repr__(self):
         return f"User(id={self.id}, username={self.username}, email={self.email})"
-    
+
 
 class UserInDB(User):
     hashed_password = Column(String)
