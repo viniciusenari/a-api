@@ -79,8 +79,13 @@ def auth_router():
         username = user.username
         email = user.email
         password = user.hashed_password
-
         hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+
+        session = Session()
+        user = session.query(UserInDB).filter(UserInDB.username == username).first()
+        if user:
+            raise HTTPException(status_code=400, detail="Username already registered")
+
         user = UserInDB(username=username, email=email, hashed_password=hashed_password)
         try:
             session = Session()
