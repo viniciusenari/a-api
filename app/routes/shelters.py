@@ -7,5 +7,5 @@ def shelters_router():
     @router.get("/shelters")
     async def get_shelters():
         return {"message": "Hello World"}
-    
+
     return router
