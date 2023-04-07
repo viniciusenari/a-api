@@ -7,6 +7,8 @@ from app.routes import (
     healthcheck_router,
     tutors_router,
     shelters_router,
+    pets_router,
+    adoption_router,
 )
 
 router = APIRouter()
@@ -24,4 +26,16 @@ router.include_router(
     prefix="/v1",
     tags=["Shelters"],
     dependencies=[Depends(get_current_user)],
+)
+router.include_router(
+    pets_router(),
+    prefix="/v1",
+    tags=["Pets"],
+    # dependencies=[Depends(get_current_user)],
+)
+router.include_router(
+    adoption_router(),
+    prefix="/v1",
+    tags=["Adoption"],
+    # dependencies=[Depends(get_current_user)],
 )
