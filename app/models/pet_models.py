@@ -1,8 +1,28 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from pydantic import BaseModel
 
 Base = declarative_base()
+
+
+class Shelter(Base):
+    __tablename__ = "shelters"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    address = Column(String)
+
+
+class ShelterBase(BaseModel):
+    id: int
+    name: str
+    description: str
+    address: str
+
+    class Config:
+        orm_mode = True
 
 
 class Pet(Base):
@@ -16,9 +36,10 @@ class Pet(Base):
     address = Column(String)
     image = Column(String)
 
+    shelter = relationship("Shelter", backref="pets")
+
 
 class PetBase(BaseModel):
-    id: int
     shelter_id: int
     description: str
     adopted: bool
