@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from app.database import Session
-from app.models import UserInDB, UserBaseInDB
+from app.models import User, UserInDB, UserBaseInDB
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -96,6 +96,7 @@ def auth_router():
 
     @router.get("/current_user")
     async def current_user(current_user: UserInDB = Depends(get_current_user)):
-        return current_user
+        user = User(id = current_user.id, username = current_user.username, email = current_user.email)
+        return user
 
     return router
