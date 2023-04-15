@@ -1,16 +1,15 @@
 import hashlib
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from app.database import Session
 from app.models import User, UserBase, UserBaseInDB, UserInDB
-from app.routes.auth import get_current_user
 
 
 def tutors_router():
     router = APIRouter()
 
     @router.get("/tutors")
-    async def get_tutors(current_user: UserInDB = Depends(get_current_user)):
+    async def get_tutors():
         try:
             session = Session()
             tutors = session.query(User).all()
@@ -19,7 +18,7 @@ def tutors_router():
         return tutors
 
     @router.get("/tutors/{id}")
-    async def get_tutor(id: int, current_user: UserInDB = Depends(get_current_user)):
+    async def get_tutor(id: int):
         try:
             session = Session()
             tutor = session.query(User).filter(User.id == id).first()
@@ -28,9 +27,7 @@ def tutors_router():
         return tutor
 
     @router.post("/tutors")
-    async def create_tutor(
-        user: UserBaseInDB, current_user: UserInDB = Depends(get_current_user)
-    ):
+    async def create_tutor(user: UserBaseInDB):
         username = user.username
         email = user.email
         password = user.hashed_password
@@ -40,7 +37,7 @@ def tutors_router():
         user = session.query(UserInDB).filter(UserInDB.username == username).first()
         if user:
             raise HTTPException(status_code=400, detail="Username already registered")
-        
+
         user = UserInDB(username=username, email=email, hashed_password=hashed_password)
 
         try:
@@ -53,9 +50,7 @@ def tutors_router():
         return UserBase(username=username, email=email)
 
     @router.put("/tutors/{id}")
-    async def update_tutor(
-        id: int, user: UserBaseInDB, current_user: UserInDB = Depends(get_current_user)
-    ):
+    async def update_tutor(id: int, user: UserBaseInDB):
         try:
             session = Session()
             tutor = session.query(User).filter(User.id == id).first()
@@ -68,7 +63,7 @@ def tutors_router():
         return "Updated tutor"
 
     @router.delete("/tutors/{id}")
-    async def delete_tutor(id: int, current_user: UserInDB = Depends(get_current_user)):
+    async def delete_tutor(id: int):
         try:
             session = Session()
             tutor = session.query(User).filter(User.id == id).first()
