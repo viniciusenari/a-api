@@ -5,17 +5,17 @@ networks:
     driver: bridge
 
 services:
-  # app:
-  #   build: .
-  #   container_name: api
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - ./app/:/app
-  #   depends_on:
-  #     - postgresql
-  #   networks:
-  #     - my-network
+  app:
+    build: .
+    container_name: api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/:/app
+    depends_on:
+      - postgresql
+    networks:
+      - my-network
 
   postgresql:
     image: postgres:15.2
